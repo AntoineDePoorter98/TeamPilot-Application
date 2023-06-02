@@ -1,0 +1,38 @@
+<mat-card class="article-card">
+  <mat-card-header>
+    <div class="header-image">
+      <img class="titleimg" src="{{avatarUrl}}">
+      <div class="titlediv">
+        <mat-card-title>
+          {{article.title}}
+        </mat-card-title>
+        <a *ngIf="article.playerId" class="links" href="/users/{{article.playerId}}">
+          <mat-card-subtitle>
+            {{authorName}}
+          </mat-card-subtitle>
+        </a>
+        <a *ngIf="article.teamId && !article.playerId" class="links" href="/teams/{{article.teamId}}">
+          <mat-card-subtitle>
+            {{authorName}}
+          </mat-card-subtitle>
+        </a>
+      </div>
+    </div>
+  </mat-card-header>
+  <mat-card-content class="maindiv">
+    <mat-spinner class="spinner" *ngIf="isLoading"></mat-spinner>
+    <iframe *ngIf="videoUrl" width="500" height="400" [src]='videoUrl' title="vid" frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen></iframe>
+    <img mat-card-image src="{{article.picUrl}}">
+    <p class="body">{{article.body}}</p>
+  </mat-card-content>
+  <mat-card-actions class="buttons">
+    <button (click)="openSnackbar()" class mat-stroked-button color="primary">LIKE</button>
+    <button (click)="openSnackbar()" mat-stroked-button color="primary">COMMENT</button>
+    <div class="spacer"></div>
+    <button (click)="openDialog(article.articleId)" *ngIf="canDelete" color="white" mat-mini-fab  aria-label="Example icon button with a menu icon">
+      <mat-icon color="warn">delete</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,408 @@
+<div class="container">
+    <div class="team-side-bar" *ngIf="manager && team && teamStats && teamPlayers, else teamStatsLoadingBlock">
+        <div class="team-intro">
+            <img class="team-icon" src={{team.avatarUrl}} alt={{team.teamName}} width="80"/>
+            <h2 class="table-head">Team {{team.teamName}} Stats</h2>
+        </div>
+            <div class="table-view">
+                <h4 class="title">Matches</h4>
+                <table class="table">
+                <tbody>
+                    <th scope="row"></th>
+                    <td class="a-left bar-{{teamValues[0].num*8}}"><p class="p-{{teamValues[0].num}}">{{teamValues[0].num}}</p></td>
+                    <td class="right bar-{{teamValues[1].num*8}}"><p>{{teamValues[1].num}}</p></td>
+            </tbody>
+        </table>
+        <div class="sub">
+            <p>Won</p> 
+            <p>Lost</p>
+        </div>
+            </div>        
+            <div class="table-view">
+                <h4 class="title">Rounds</h4>
+                <table class="table">
+                <tbody>
+                    <th scope="row"></th>
+                    <td class="a-left bar-{{teamValues[2].num}}"><p class="p-{{teamValues[0].num}}">{{teamValues[2].num}}</p></td>
+                    <td class="right bar-{{teamValues[3].num}}"><p>{{teamValues[3].num}}</p></td>
+            </tbody>
+        </table>
+        <div class="sub">
+            <p>Won</p> 
+            <p>Lost</p>
+        </div>
+            </div>      
+            <a routerLink="/teams"><button mat-button>Back To Teams</button></a>
+    </div> 
+        <ng-template #teamStatsLoadingBlock>
+            <div class="team-intro">
+                <img src="#" width="80"/>
+                <h1 class="table-head">Loading Team Stats...</h1>
+            </div>
+        <a routerLink="/teams"><button mat-button>Back To Teams</button></a>
+        </ng-template>
+    <div class="team-manager-view" *ngIf="team?.teamManagerId == manager?.userId, else elseBlock">
+        <div class="team-public-view">
+                <div class="players-view" *ngIf="teamPlayers?.length!=0, else loadingPlayersBlock">
+                <div class="manager-dash">
+                    <h1 class="dash-greet">Welcome, {{manager?.nickname}}</h1>
+                    <div class="dash-edit">
+                        <h3 class="edit-head">Edit Team Details</h3>
+                        <mat-form-field>
+                            <mat-label>New Team Name</mat-label>
+                            <input matInput name="teamName" [(ngModel)]="teamToUpdate.teamName"/>
+                        </mat-form-field>
+                            <button *ngIf="teamToUpdate.teamName!='', else updateTeamNameBlock" mat-raised-button type="submit" color="primary" class="submit-btn" (click)="updateTeamDetails()">Submit</button>
+                            <ng-template #updateTeamNameBlock><button mat-raised-button type="submit" color="disabled" class="submit-btn">Submit</button></ng-template>
+                        <div class="add-player">
+                            <button mat-button color="primary" (click)="getAvailablePlayers()">Add Player to Team</button>
+                            <div *ngIf="playersToAdd?.length??0 !=0" class="player-selector">
+                                <mat-form-field>
+                                    <mat-label>Available Players</mat-label>
+                                    <mat-select [(ngModel)]="playerToAdd">
+                                      <mat-option *ngFor="let player of playersToAdd" [value]="player.userId??''">
+                                        {{player.nickname}}
+                                      </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <button *ngIf="playerToAdd, else noPlayerToAddBlock" (click)="addPlayer()" class="add-btn"><app-add></app-add></button>
+                                <ng-template #noPlayerToAddBlock>
+                                    <button class="add-btn-d"><app-add></app-add></button>
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <h2 class="players-head">Team Players : </h2>
+                    <div class="player-manager" *ngFor="let player of teamPlayers">
+                        <div class="player-box" >
+                            <div class="player-cell">
+                                <a routerLink="/users/{{player.userId}}" class="player-top-m">
+                                    <p>{{player?.nickname}}</p>
+                                    <img class="player-icon" mat-card-sm-image src={{player?.avatarUrl}}/>
+                                </a>
+                                    <div class="player-stats">
+                                        <dl class="player-data-wrapper">
+                                            <dd class="player-kill stick-{{player?.playerKills}}" id={{player?.playerKills}}></dd><span class="player-bar">Kills :</span>
+                                            <dd class="player-death stick-{{player?.playerDeaths}}" id={{player?.playerDeaths}}></dd><span class="player-bar">Deaths :</span>
+                                            <dd class="player-ratio brick-{{player?.playerKDRatio}}" id="{{((player?.playerKDRatio??0))}} %"></dd><span class="player-bar">K/D :</span>
+                                        </dl>
+                                    </div>
+                                    <div class="buttons">
+                                        <button mat-stroked-button class="remove-btn" (click)="removePlayer(player?.userId??'')"><app-remove></app-remove></button>
+                                        <button class="edit-btn" (click)="toggleSalaryEditor(player?.userId??'')"><app-edit></app-edit></button>
+                                    </div>
+                                </div>
+                                <div class="edit-salary">
+                                    <div class="salary-head">
+                                        <h5 class="current-salary-head">Monthly Salary : </h5><h4 class="current-salary-sum">{{player.monthlySalary}}</h4>
+                                    </div>
+                                        <div *ngIf="editSalaryId == player?.userId??''" class="salary-editor">
+                                            <mat-form-field>
+                                                <mat-label>New Salary</mat-label>
+                                                <input matInput name="playerSalary" [(ngModel)]="newSalary"/>
+                                            </mat-form-field>
+                                            <button mat-raised-button type="submit" color="primary" (click)="updatePlayerPay()">Confirm</button>
+                                        </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            <ng-template  #loadingPlayersBlock>
+                <div class="players-view">
+                    <h2 class="players-head">Loading Players ... </h2>
+                    <div class="player-box" *ngFor="let _ of [].constructor(5)">
+                        <h4 class="player-top">...</h4>
+                        <div class="player-cell">
+                            <img class="player-icon" mat-card-sm-image src=""/>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+            <div *ngIf="ongoingTournaments&&upcomingTournaments&&pastTournaments, else loadingTournamentBlock" class="team-tournaments">
+                <div class="tournament-head">
+                    <h2 >Team Tournaments : </h2>
+                </div>
+                <h3 class="tournament-sub">Current : </h3>
+                <div class="tournament-box" *ngFor="let turn of ongoingTournaments">
+                    <a class="tournament-title" routerLink="/tournaments/{{turn.tournamentId}}">
+                            <h4 class="turn-head">{{turn.tournamentName}}</h4>
+                            <h5 class="tournament-date" >{{turn.tournamentStartDate}} - {{turn.tournamentEndDate}}</h5>
+                        </a>
+                        <button class="show-match-button" mat-button color="primary" (click)="getMatches(turn?.tournamentId??'')">View Matches</button>
+                        <div class="matches-block">
+                        <div class="match-view" *ngIf="futureTournamentMatches?.length !=0??''">
+                            <h4 class="tournament-sub">Next Matches :</h4>
+                            <div *ngFor="let match of futureTournamentMatches">
+                                <div *ngIf="match.tournamentId == turn.tournamentId">
+                                    <h5 class="tournament-date">{{match.matchDate}}</h5>
+                                        <div *ngFor="let t of match.participatingTeams">
+                                            <div class="rival-team" *ngIf="t.teamId != team?.teamId??''">
+                                                <a class="tournament-title" href="/teams/{{t.teamId}}">
+                                                    <h5>Playing Against :</h5>
+                                                    <img class="match-pic" mat-card-sm-image src={{t.avatarURL}} alt={{t.teamName}}/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                           
+                            </div>
+                            <div class="match-view" *ngIf="pastTournamentMatches?.length !=0">
+                                <h4 class="tournament-sub">Previous Matches :</h4>
+                                <div *ngFor="let match of pastTournamentMatches">
+                                    <div *ngIf="match.tournamentId == turn.tournamentId">
+                                        <h5  class="tournament-date">{{match.matchDate}}</h5>
+                                        <div class="rival-team" *ngFor="let t of match.participatingTeams">
+                                                <div *ngIf="t.teamId != team?.teamId">
+                                                    <a class="tournament-title" href="/teams/{{t.teamId}}">
+                                                        <h5>Played Against :</h5>
+                                                        <img class="match-pic" mat-card-sm-image src={{t.avatarURL}} alt={{t.teamName}}/>
+                                                    </a>
+                                                    <h4 class="tournament-lost" *ngIf="match.winningTeam?.teamId != team?.teamId, else winBlock">Lost</h4>
+                                                    <ng-template #winBlock>
+                                                        <h4 class="tournament-won">Won</h4>
+                                                    </ng-template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>                                           
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="tournament-sub">Upcoming : </h3>                            
+                        <div class="tournament-box" *ngFor="let turn of upcomingTournaments">
+                            <a class="tournament-title" routerLink="/tournaments/{{turn.tournamentId}}">
+                                <h4 class="turn-head">{{turn.tournamentName}}</h4>
+                                <h5 class="tournament-date">{{turn.tournamentStartDate}} - {{turn.tournamentEndDate}}</h5>
+                            </a>
+                            <button class="show-match-button" mat-button color="primary" (click)="getMatches(turn?.tournamentId??'')">View Matches</button>
+                            <div class="matches-block">
+                                <div class="match-view" *ngIf="futureTournamentMatches">
+                                    <div *ngFor="let match of futureTournamentMatches">
+                                        <h5 class="tournament-date">{{match.matchDate}}</h5>
+                                            <div class="rival-team" *ngFor="let t of match.participatingTeams">
+                                                <div *ngIf="t.teamId != team?.teamId??''">
+                                                    <a class="tournament-title" href="/teams/{{t.teamId}}">
+                                                        <h5 >Playing Against :</h5>
+                                                        <img class="match-pic" mat-card-sm-image src={{t.avatarURL}} alt={{t.teamName}}/>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                    </div>   
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="tournament-sub">Past :</h3>
+                        <div class="tournament-box" *ngFor="let turn of pastTournaments">
+                                        <a class="tournament-title" routerLink="/tournaments/{{turn.tournamentId}}">
+                                        <h4 class="turn-head">{{turn.tournamentName}}</h4>
+                                        <h5 class="tournament-date">{{turn.tournamentStartDate}} - {{turn.tournamentEndDate}}</h5>
+                                    </a>
+                                    <button class="show-match-button" mat-button color="primary" (click)="getMatches(turn?.tournamentId??'')">View Matches</button>
+                                    <div class="matches-block">
+                                    <div class="match-view" *ngIf="pastTournamentMatches?.length !=0??''">
+                                        <div *ngFor="let match of pastTournamentMatches">
+                                            <h5 class="tournament-date" *ngIf="match.tournamentId == turn.tournamentId">
+                                                <h5 class="tournament-date">{{match.matchDate}}</h5>
+                                                <div class="rival-team" *ngFor="let t of match.participatingTeams">
+                                                    <!-- <div *ngIf="t?.teamId??'' != team?.teamId??'' && t.teamId!= 'a949f19e-e143-441c-9ca7-1b18bdbf3513'"> -->
+                                                        <div *ngIf="t.teamId != team?.teamId??''">
+                                                            <a class="tournament-title" href="/teams/{{t.teamId}}">
+                                                            <h5 >Played Against :</h5>
+                                                            <img class="match-pic" mat-card-sm-image src={{t.avatarURL}} alt={{t.teamName}}/>
+                                                        </a>
+                                                        <h4 class="tournament-lost" *ngIf="match.winningTeam?.teamId != team?.teamId, else winBlock">Lost</h4>
+                                                        <ng-template #winBlock>
+                                                            <h4 class="tournament-won">Won</h4>
+                                                        </ng-template>
+                                                    </div>
+                                                </div>
+                                            </h5>
+                                        </div>                                           
+                                    </div>
+                                </div>
+                    </div>
+            </div>
+            <ng-template #loadingTournamentBlock>
+                <mat-card>
+                    <mat-card-content>
+                        <mat-card-title>Team Tournaments :</mat-card-title>
+                        <mat-card-subtitle>Current :</mat-card-subtitle>
+                                <div class="tournament-box">
+                                    <h4 class="tournament-title">Loading ...</h4>
+                                    <h5 class="tournament-date">...</h5>
+                                    </div>
+                        <mat-card-subtitle>Upcoming :</mat-card-subtitle>
+                        <div class="tournament-box">
+                            <h4 class="tournament-title">Loading ...</h4>
+                            <h5 class="tournament-date">...</h5>
+                            </div>
+                        <mat-card-subtitle>Past :</mat-card-subtitle>
+                        <div class="tournament-box">
+                            <h4 class="tournament-title">Loading ...</h4>
+                            <h5 class="tournament-date">...</h5>
+                            </div>
+                    </mat-card-content>
+                </mat-card>
+            </ng-template>
+        </div>
+    </div>
+    <ng-template #elseBlock>
+        <div class="team-public-view">
+            <div class="players-view" *ngIf="teamPlayers?.length!=0, else loadingPlayersBlock">
+                <h2 class="players-head">Team Players : </h2>
+                <div class="player-box" *ngFor="let player of teamPlayers">
+                    <a routerLink="/users/{{player.userId}}" class="player-top">{{player?.nickname}}
+                        <div class="player-cell">
+                            <img class="player-icon" mat-card-sm-image src={{player?.avatarUrl}}/>
+                            <div class="player-stats">
+                                <dl class="player-data-wrapper">
+                                    <dd class="player-kill stick-{{player?.playerKills}}" id={{player?.playerKills}}></dd><span class="player-bar">Kills :</span>
+                                    <dd class="player-death stick-{{player?.playerDeaths}}" id={{player?.playerDeaths}}></dd><span class="player-bar">Deaths :</span>
+                                    <dd class="player-ratio brick-{{player?.playerKDRatio}}" id="{{((player?.playerKDRatio??0))}} %"></dd><span class="player-bar">K/D :</span>
+                                </dl>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <ng-template  #loadingPlayersBlock>
+                <div class="players-view">
+                    <h2 class="players-head">Loading Players ... </h2>
+                    <div class="player-box" *ngFor="let _ of [].constructor(5)">
+                        <h4 class="player-top">...</h4>
+                        <div class="player-cell">
+                            <img class="player-icon" mat-card-sm-image src=""/>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+            <div *ngIf="ongoingTournaments&&upcomingTournaments&&pastTournaments, else loadingTournamentBlock" class="team-tournaments">
+                <div class="tournament-head">
+                    <h2 >Team Tournaments : </h2>
+                </div>
+                <h3 class="tournament-sub">Current : </h3>
+                <div class="tournament-box" *ngFor="let turn of ongoingTournaments">
+                    <a class="tournament-title" routerLink="/tournaments/{{turn.tournamentId}}">
+                            <h4 class="turn-head">{{turn.tournamentName}}</h4>
+                            <h5 class="tournament-date" >{{turn.tournamentStartDate}} - {{turn.tournamentEndDate}}</h5>
+                        </a>
+                        <button class="show-match-button" mat-button color="primary" (click)="getMatches(turn?.tournamentId??'')">View Matches</button>
+                        <div class="matches-block">
+                        <div class="match-view" *ngIf="futureTournamentMatches?.length !=0??''">
+                            <h4 class="tournament-sub">Next Matches :</h4>
+                            <div *ngFor="let match of futureTournamentMatches">
+                                <div *ngIf="match.tournamentId == turn.tournamentId">
+                                    <h5 class="tournament-date">{{match.matchDate}}</h5>
+                                        <div *ngFor="let t of match.participatingTeams">
+                                            <div class="rival-team" *ngIf="t.teamId != team?.teamId??''">
+                                                <a class="tournament-title" href="/teams/{{t.teamId}}">
+                                                    <h5>Playing Against :</h5>
+                                                    <img class="match-pic" mat-card-sm-image src={{t.avatarURL}} alt={{t.teamName}}/>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                                           
+                            </div>
+                            <div class="match-view" *ngIf="pastTournamentMatches?.length !=0">
+                                <h4 class="tournament-sub">Previous Matches :</h4>
+                                <div *ngFor="let match of pastTournamentMatches">
+                                    <div *ngIf="match.tournamentId == turn.tournamentId">
+                                        <h5  class="tournament-date">{{match.matchDate}}</h5>
+                                        <div class="rival-team" *ngFor="let t of match.participatingTeams">
+                                                <div *ngIf="t.teamId != team?.teamId">
+                                                    <a class="tournament-title" href="/teams/{{t.teamId}}">
+                                                        <h5>Played Against :</h5>
+                                                        <img class="match-pic" mat-card-sm-image src={{t.avatarURL}} alt={{t.teamName}}/>
+                                                    </a>
+                                                    <h4 class="tournament-lost" *ngIf="match.winningTeam?.teamId != team?.teamId, else winBlock">Lost</h4>
+                                                    <ng-template #winBlock>
+                                                        <h4 class="tournament-won">Won</h4>
+                                                    </ng-template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>                                           
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="tournament-sub">Upcoming : </h3>                            
+                        <div class="tournament-box" *ngFor="let turn of upcomingTournaments">
+                            <a class="tournament-title" routerLink="/tournaments/{{turn.tournamentId}}">
+                                <h4 class="turn-head">{{turn.tournamentName}}</h4>
+                                <h5 class="tournament-date">{{turn.tournamentStartDate}} - {{turn.tournamentEndDate}}</h5>
+                            </a>
+                            <button class="show-match-button" mat-button color="primary" (click)="getMatches(turn?.tournamentId??'')">View Matches</button>
+                            <div class="matches-block">
+                                <div class="match-view" *ngIf="futureTournamentMatches">
+                                    <div *ngFor="let match of futureTournamentMatches">
+                                        <h5 class="tournament-date">{{match.matchDate}}</h5>
+                                            <div class="rival-team" *ngFor="let t of match.participatingTeams">
+                                                <div *ngIf="t.teamId != team?.teamId??''">
+                                                    <a class="tournament-title" href="/teams/{{t.teamId}}">
+                                                        <h5 >Playing Against :</h5>
+                                                        <img class="match-pic" mat-card-sm-image src={{t.avatarURL}} alt={{t.teamName}}/>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                    </div>   
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="tournament-sub">Past :</h3>
+                        <div class="tournament-box" *ngFor="let turn of pastTournaments">
+                                        <a class="tournament-title" routerLink="/tournaments/{{turn.tournamentId}}">
+                                        <h4 class="turn-head">{{turn.tournamentName}}</h4>
+                                        <h5 class="tournament-date">{{turn.tournamentStartDate}} - {{turn.tournamentEndDate}}</h5>
+                                    </a>
+                                    <button class="show-match-button" mat-button color="primary" (click)="getMatches(turn?.tournamentId??'')">View Matches</button>
+                                    <div class="matches-block">
+                                    <div class="match-view" *ngIf="pastTournamentMatches?.length !=0??''">
+                                        <div *ngFor="let match of pastTournamentMatches">
+                                            <h5 class="tournament-date" *ngIf="match.tournamentId == turn.tournamentId">
+                                                <h5 class="tournament-date">{{match.matchDate}}</h5>
+                                                <div class="rival-team" *ngFor="let t of match.participatingTeams">
+                                                    <!-- <div *ngIf="t?.teamId??'' != team?.teamId??'' && t.teamId!= 'a949f19e-e143-441c-9ca7-1b18bdbf3513'"> -->
+                                                        <div *ngIf="t.teamId != team?.teamId??''">
+                                                            <a class="tournament-title" href="/teams/{{t.teamId}}">
+                                                            <h5 >Played Against :</h5>
+                                                            <img class="match-pic" mat-card-sm-image src={{t.avatarURL}} alt={{t.teamName}}/>
+                                                        </a>
+                                                        <h4 class="tournament-lost" *ngIf="match.winningTeam?.teamId != team?.teamId, else winBlock">Lost</h4>
+                                                        <ng-template #winBlock>
+                                                            <h4 class="tournament-won">Won</h4>
+                                                        </ng-template>
+                                                    </div>
+                                                </div>
+                                            </h5>
+                                        </div>                                           
+                                    </div>
+                                </div>
+                    </div>
+            </div>
+            <ng-template #loadingTournamentBlock>
+                <mat-card>
+                    <mat-card-content>
+                        <mat-card-title>Team Tournaments :</mat-card-title>
+                        <mat-card-subtitle>Current :</mat-card-subtitle>
+                                <div class="tournament-box">
+                                    <h4 class="tournament-title">Loading ...</h4>
+                                    <h5 class="tournament-date">...</h5>
+                                    </div>
+                        <mat-card-subtitle>Upcoming :</mat-card-subtitle>
+                        <div class="tournament-box">
+                            <h4 class="tournament-title">Loading ...</h4>
+                            <h5 class="tournament-date">...</h5>
+                            </div>
+                        <mat-card-subtitle>Past :</mat-card-subtitle>
+                        <div class="tournament-box">
+                            <h4 class="tournament-title">Loading ...</h4>
+                            <h5 class="tournament-date">...</h5>
+                            </div>
+                    </mat-card-content>
+                </mat-card>
+            </ng-template>
+        </div>
+    </ng-template>
+</div>

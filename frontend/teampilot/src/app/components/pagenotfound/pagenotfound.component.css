@@ -1,0 +1,11 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.main img {
+    width: 35%;
+    align-self: center;
+    margin: 10px;
+}

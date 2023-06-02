@@ -1,0 +1,97 @@
+<mat-toolbar color="primary" class="stickyBar">
+  <button mat-button class="home" routerLink="/"><app-logo></app-logo></button>
+  <button mat-button class="route" routerLink="/tournaments">
+    Tournaments
+  </button>
+  <button mat-button class="route" routerLink="/teams">Teams</button>
+  <button mat-button class="route" routerLink="/players">Players</button>
+  <button mat-button class="route" routerLink="/leaderboard">
+    Leaderboard
+  </button>
+
+  <span class="spacer"></span>
+  <button class="search-icon" mat-icon-button (click)="openDialog()">
+    <mat-icon>search</mat-icon>
+  </button>
+  <ng-container
+    *ngIf="
+      currentUserService.currentUser && !currentUserService.isCurrentUserLoading
+    "
+  >
+    <img
+      *ngIf="currentUserService.currentUser.avatarUrl"
+      class="profilepicture"
+      [src]="currentUserService.currentUser.avatarUrl"
+      alt=""
+      [matMenuTriggerFor]="menu"
+    />
+
+    <button
+      mat-icon-button
+      *ngIf="!currentUserService.currentUser.avatarUrl"
+      class="profilepicture"
+      [matMenuTriggerFor]="menu"
+    >
+      <mat-icon class="profileicon">person</mat-icon>
+    </button>
+
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>person</mat-icon>
+        <span routerLink="/users/{{ currentUserService.currentUser.userId }}">
+          My Profile
+        </span>
+      </button>
+      <button
+        *ngIf="currentUserService.currentUser.userType === 'Player'"
+        mat-menu-item
+      >
+        <mat-icon>groups</mat-icon>
+        <span routerLink="/teams/{{ currentUserService.currentUser.teamId }}">
+          My Team
+        </span>
+      </button>
+      <button
+        *ngIf="currentUserService.currentUser.userType === 'Player' || currentUserService.currentUser.userType === 'TeamManager'"
+        mat-menu-item
+      >
+        <mat-icon>library_add</mat-icon>
+        <span routerLink="/new">
+          Create Post
+        </span>
+      </button>
+      <button
+        *ngIf="currentUserService.currentUser.userType === 'TournamentManager'"
+        mat-menu-item
+      >
+        <mat-icon>library_add</mat-icon>
+        <span routerLink="/tournaments/new">
+          Create Tournament
+        </span>
+      </button>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </ng-container>
+  <span>
+    <mat-spinner
+      color="accent"
+      diameter="40"
+      *ngIf="currentUserService.isCurrentUserLoading"
+    ></mat-spinner>
+  </span>
+  <span
+    *ngIf="
+      !currentUserService.currentUser &&
+      !currentUserService.isCurrentUserLoading
+    "
+  >
+    <button mat-raised-button (click)="navigateToLogin()">Login</button>
+  </span>
+</mat-toolbar>
+<div class="main">
+  <router-outlet></router-outlet>
+</div>
+<app-footer></app-footer>

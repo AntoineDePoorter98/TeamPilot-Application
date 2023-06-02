@@ -1,0 +1,30 @@
+<div class="container">
+      <div class="team-list" *ngIf="teamsToShow.length!=0, else elseBlock">
+          <h1>Our Teams :</h1>
+          <a class="team-view" *ngFor="let team of teamsToShow" routerLink="/teams/{{team.teamId}}">
+            <div  class="team-link">
+                  <h2 class="team-title">{{team.teamName}}</h2>
+                  <img class="team-image" src={{team.avatarUrl}} alt={{team.teamName}}/>
+                </div>
+              </a>
+                <mat-paginator class="team-paginator" [length]="teams?.length??0"
+                [pageSize]="4"
+                [pageSizeOptions]="[4, 8, 16, 32]"
+                (page)="change($event)">
+              </mat-paginator>
+        </div>
+        <ng-template #elseBlock>
+          <h1>Loading Teams...</h1>
+          <div class="team-view">
+            <ng-container *ngFor="let _ of [].constructor(10)">
+              <mat-card>
+                <mat-card-content>
+                  <mat-card-title> ...</mat-card-title>
+                  <img mat-card-md-image/>
+                </mat-card-content>
+              </mat-card>
+            </ng-container>
+          </div>
+        </ng-template>
+</div>
+

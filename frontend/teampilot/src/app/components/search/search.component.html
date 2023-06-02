@@ -1,0 +1,42 @@
+<div class="container">
+  <form class="full-width">
+    <mat-form-field
+      subscriptSizing="dynamic"
+      class="full-width"
+      appearance="outline"
+    >
+      <input
+        type="text"
+        [(ngModel)]="searchValue"
+        name="search"
+        placeholder="Search..."
+        matInput
+        autocomplete="off"
+      />
+      <mat-spinner
+        matSuffix
+        class="spinner"
+        color="accent"
+        diameter="30"
+        *ngIf="isLoading && searchValue != ''"
+      />
+    </mat-form-field>
+
+    <mat-list class="list">
+      <mat-list-item
+        class="pointer"
+        matRipple
+        *ngFor="let option of results"
+        (click)="navigate(option)"
+      >
+        <div class="list-item" matListItemTitle>
+          <span>{{ option.result }}</span>
+          <mat-chip-option>{{ option.resultType }}</mat-chip-option>
+        </div>
+      </mat-list-item>
+      <mat-list-item *ngIf="results.length == 0 && searchValue != ''">
+        No results found
+      </mat-list-item>
+    </mat-list>
+  </form>
+</div>

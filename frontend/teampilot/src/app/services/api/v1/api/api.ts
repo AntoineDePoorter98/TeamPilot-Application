@@ -1,0 +1,15 @@
+export * from './article.service';
+import { ArticleService } from './article.service';
+export * from './auth.service';
+import { AuthService } from './auth.service';
+export * from './leaderboard.service';
+import { LeaderboardService } from './leaderboard.service';
+export * from './ping.service';
+import { PingService } from './ping.service';
+export * from './team.service';
+import { TeamService } from './team.service';
+export * from './tournament.service';
+import { TournamentService } from './tournament.service';
+export * from './user.service';
+import { UserService } from './user.service';
+export const APIS = [ArticleService, AuthService, LeaderboardService, PingService, TeamService, TournamentService, UserService];

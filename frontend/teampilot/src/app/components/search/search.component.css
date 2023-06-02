@@ -1,0 +1,28 @@
+.full-width {
+  width: 100%;
+}
+
+.container {
+  margin: 1rem;
+}
+
+.spinner {
+  margin-right: 1rem;
+}
+
+.pointer:hover {
+  cursor: pointer;
+}
+
+.list {
+  padding: 0;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+}
+
+mat-chip-option {
+  margin-left: 0.5rem;
+}

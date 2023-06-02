@@ -1,0 +1,32 @@
+.maincontent {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    min-width: 700px;
+}
+
+.inner {
+    display: inline-block;
+    margin: 0 auto;
+    padding: 3px;
+    width: 50%;
+}
+
+.spinner {
+    margin: 0 auto;
+}
+
+.mat-card:not([class*=mat-elevation-z]) {
+    box-shadow: 0 2px 1px -1px rgba(0,0,0,1), 
+                0 1px 1px 0 rgba(0,0,0,1), 
+                0 1px 3px 0 rgba(0,0,0,1);
+}
+
+.toolbar {
+    display: flex;
+    margin: 0px 0px 15px 0px;
+}
+
+.spacer {
+    flex: 1 1 auto;
+}

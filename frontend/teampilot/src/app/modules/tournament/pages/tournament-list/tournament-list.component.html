@@ -1,0 +1,41 @@
+<div class="back">
+  <div class="title">
+    <h1>Tournaments</h1>
+  </div>
+
+  <mat-spinner
+    class="spinner"
+    color="accent"
+    diameter="60"
+    *ngIf="isLoading"
+  ></mat-spinner>
+
+  <div class="list">
+    <table mat-table [dataSource]="tournament" matSort>
+      <ng-container matColumnDef="tournamentName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Tournament Name</th>
+        <td mat-cell *matCellDef="let tournament"><a href="/tournaments/{{tournament.tournamentId}}">{{tournament.tournamentName}}</a></td>
+      </ng-container>
+      <ng-container matColumnDef="tournamentStartDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Start Date</th>
+        <td mat-cell *matCellDef="let tournament">{{tournament.tournamentStartDate | date: "yyyy-MM-dd"}}</td>
+      </ng-container>
+      <ng-container matColumnDef="tournamentEndDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>End Date</th>
+        <td mat-cell *matCellDef="let tournament">{{tournament.tournamentEndDate | date: "yyyy-MM-dd"}}</td>
+      </ng-container>
+      <ng-container matColumnDef="tournamentPrizePool">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Prize</th>
+        <td mat-cell *matCellDef="let tournament">$ {{tournament.tournamentPrizePool.toLocaleString()}}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator #paginator [pageSizeOptions]="[5, 10, 15]"
+                   showFirstLastButtons
+                   aria-label="Select page of tournaments">
+    </mat-paginator>
+  </div>
+</div>

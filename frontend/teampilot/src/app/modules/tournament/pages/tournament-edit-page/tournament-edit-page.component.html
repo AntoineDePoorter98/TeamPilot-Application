@@ -1,0 +1,69 @@
+<div *ngIf="tournamentIncoming">
+  <div class="title">
+    <h1>Edit tournament: {{ tournamentIncoming.tournamentName }}</h1>
+  </div>
+  <div class="edit-tournament">
+    <mat-form-field>
+      <mat-label>Tournament Name</mat-label>
+      <input
+        matInput
+        name="tournamentName"
+        [(ngModel)]="tournamentIncoming.tournamentName"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Tournament Format</mat-label>
+      <input
+        matInput
+        name="tournamentFormat"
+        [(ngModel)]="tournamentIncoming.tournamentFormat"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Tournament Sponsor</mat-label>
+      <input
+        matInput
+        name="tournamentSponsor"
+        [(ngModel)]="tournamentIncoming.tournamentSponsor"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Tournament Prize Pool</mat-label>
+      <input
+        matInput
+        name="tournamentPrizePool"
+        [(ngModel)]="tournamentIncoming.tournamentPrizePool"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Tournament Location</mat-label>
+      <input
+        matInput
+        name="tournamentLocation"
+        [(ngModel)]="tournamentIncoming.tournamentLocation"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Teams</mat-label>
+      <mat-select
+        [formControl]="teams"
+        (selectionChange)="TeamChange($event)"
+        multiple
+      >
+        <mat-select-trigger>
+          {{teams.value?.[0] || ''}}
+          <span *ngIf="(teams.value?.length || 0) > 1" class="team-selector">
+            (+{{ (teams.value?.length || 0) - 1 }}
+            {{ teams.value?.length === 2 ? "other" : "others" }})
+          </span>
+        </mat-select-trigger>
+        <mat-option *ngFor="let team of allTeams" [value]="team">{{
+          team.teamName
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="save-button">
+      <button (click)="SaveTournament()">Save Changes</button>
+    </div>
+  </div>
+</div>

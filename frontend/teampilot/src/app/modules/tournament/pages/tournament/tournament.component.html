@@ -1,0 +1,99 @@
+<div *ngIf="tournament" class="page">
+  <div class="sidebar">
+    <div>
+      <mat-accordion>
+        <mat-expansion-panel
+          class="teams"
+          #panel
+          (mouseenter)="panel.open()"
+          (mouseleave)="panel.close()"
+        >
+          <mat-expansion-panel-header class="expansion-header">
+            <h4 class="team-title"><b>Participating Teams</b></h4>
+          </mat-expansion-panel-header>
+          <mat-spinner
+            class="spinner"
+            color="accent"
+            diameter="60"
+            *ngIf="isLoading"
+          ></mat-spinner>
+          <div *ngFor="let team of tournament.tournamentParticipatingTeams; let first=first">
+            <hr *ngIf="!first">
+            <a href="/teams/{{team.teamId}}" class="list">{{team.teamName}}</a>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+    <div class="info">
+      <h4><b>Sponsor</b></h4>
+      <a href="https://www.google.com/search?q={{tournament.tournamentSponsor}}">{{tournament.tournamentSponsor}}</a>
+      <hr>
+      <h4><b>Prize pool</b></h4>
+      ${{tournament.tournamentPrizePool?.toLocaleString()}}
+    </div>
+    <div>
+      <button mat-button (click)="LinkToLeaderboardForTournament()" class="leaderboard-button">Leaderboard</button>
+    </div>
+    <div *ngIf="currentUserService.currentUser?.userType === 'TournamentManager'">
+      <button mat-button (click)="LinkToEditTournament(tournament.tournamentId)" class="edit-button">Edit tournament</button>
+    </div>
+  </div>
+  <div class="main">
+    <div class="title">
+      <mat-spinner
+        class="spinner"
+        color="accent"
+        diameter="60"
+        *ngIf="isLoading"
+      ></mat-spinner>
+      <h1 class="title-words">{{tournament.tournamentName}}</h1>
+      <p *ngIf="!isLoading" class="date">{{tournament.tournamentStartDate?.slice(0, 10)}} : {{tournament.tournamentEndDate?.slice(0, 10)}}</p>
+    </div>
+    <div class="matches">
+      <div class="tournament-not-started" *ngIf="currentDate < startDate">
+        <h2>The tournament will start on:</h2>
+        <h3 class="date">{{startDate.toLocaleString()}}</h3>
+      </div>
+      <div class="past" *ngIf="currentDate > startDate">
+        <mat-list>
+          <h2 *ngIf="currentDate < endDate">Past Matches</h2>
+          <h2 *ngIf="currentDate > endDate">Latest Matches</h2>
+          <div *ngFor="let match of tournament.pastTournamentMatches | slice:0:3; let first=first">
+            <span *ngIf="!first">
+              <hr>
+            </span>
+            <span matListItemTitle>Winner: <a href="/teams/{{match.winningTeam?.teamId}}">{{match.winningTeam?.teamName}}</a></span>
+            <span matListItemLine *ngIf="!isLoading">{{match.participatingTeams?.at(0)?.teamName}} vs. {{match.participatingTeams?.at(1)?.teamName}}</span>
+            <span matListItemLine class="date">{{match.matchDate}}</span>
+          </div>
+        </mat-list>
+      </div>
+      <div class="tournament-finished" *ngIf="currentDate > endDate">
+        <h2>The tournament has finished, the winner is <a href="/teams/{{tournament.winningTeam?.teamId}}">{{tournament.winningTeam?.teamName}}</a></h2>
+        <img src="{{tournament.winningTeam?.avatarURL}}" class="image">
+      </div>
+      <div class="upcoming-matches" *ngIf="currentDate < endDate">
+        <div class="upcoming">
+          <h2>Upcoming Match</h2>
+          <p class="date">{{tournament.futureTournamentMatches?.at(0)?.matchDate}}</p>
+          <h4 *ngIf="!isLoading">{{tournament.futureTournamentMatches?.at(0)?.participatingTeams?.at(0)?.teamName}} vs. {{tournament.futureTournamentMatches?.at(0)?.participatingTeams?.at(1)?.teamName}}</h4>
+        </div>
+        <div class="upcomings">
+          <mat-list>
+            <h2>Upcoming Matches</h2>
+            <div *ngFor="let match of tournament.futureTournamentMatches | slice:0:3; let first=first">
+              <span *ngIf="!first">
+                <hr>
+              </span>
+              <span matListItemTitle class="date">{{match.matchDate}}</span>
+              <span matListItemLine  *ngIf="!isLoading">{{match.participatingTeams?.at(0)?.teamName}} vs. {{match.participatingTeams?.at(1)?.teamName}}</span>
+            </div>
+          </mat-list>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="!tournament">
+  404, not found
+</div>

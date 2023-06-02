@@ -1,0 +1,242 @@
+<div class="container">
+  <div class="user">
+    <div class="title">
+      <h1>{{ user.nickname }}</h1>
+    </div>
+    <div class="user-wrapper">
+      <div *ngIf="!isEditMode && user" class="user-infos">
+        <p>Name: {{ user.firstName }}</p>
+        <p>Surname: {{ user.lastName }}</p>
+        <p>Email: {{ user.email }}</p>
+        <p>Bio: {{ user.bio }}</p>
+        <p *ngIf="user?.userType === 'RegisteredUser'">Type of user: Visitor</p>
+        <p *ngIf="user?.userType === 'Player'">Type of user: Player</p>
+        <p *ngIf="user?.userType === 'TournamentManager'">
+          Type of user: Tournament Manager
+        </p>
+        <p *ngIf="user?.userType === 'TeamManager'">
+          Type of user: Team Manager
+        </p>
+
+        <p *ngIf="user?.userType === 'Player'">
+          Salary: {{ user.monthlySalary }}
+        </p>
+        <p *ngIf="user?.userType === 'Player'">Team: {{ teamName }}</p>
+      </div>
+      <div *ngIf="isEditMode" class="edit-user-infos">
+        <form [formGroup]="userForm">
+          <mat-form-field>
+            <input matInput placeholder="Username" formControlName="nickname" />
+            <mat-error *ngIf="userForm.get('nickname')?.hasError('maxlength')">
+              Username cannot be more than 50 characters long.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Name" formControlName="firstName" />
+            <mat-error *ngIf="userForm.get('firstName')?.hasError('maxlength')">
+              Name cannot be more than 50 characters long.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Surname" formControlName="lastName" />
+            <mat-error *ngIf="userForm.get('lastName')?.hasError('maxlength')">
+              Surname cannot be more than 50 characters long.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Email" formControlName="email" />
+            <mat-error *ngIf="userForm.get('email')?.hasError('maxlength')">
+              Email cannot be more than 100 characters long.
+            </mat-error>
+            <mat-error *ngIf="userForm.get('email')?.hasError('email')">
+              Please enter a valid email.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Bio" formControlName="bio" />
+            <mat-error *ngIf="userForm.get('bio')?.hasError('maxlength')">
+              Bio cannot be more than 300 characters long.
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input
+              matInput
+              placeholder="Image URL"
+              formControlName="avatarUrl"
+            />
+            <mat-error *ngIf="userForm.get('avatarUrl')?.hasError('maxlength')">
+              Image URL cannot be more than 150 characters long.
+            </mat-error>
+          </mat-form-field>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="saveChanges()"
+            [disabled]="userForm.invalid"
+          >
+            Save Changes
+          </button>
+        </form>
+      </div>
+
+      <div class="user-image">
+        <img *ngIf="user.avatarUrl" src="{{ user.avatarUrl }}" alt="user profile picture" />
+        <img *ngIf="!user.avatarUrl" src="https://t3.ftcdn.net/jpg/05/16/27/58/240_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg"/>
+      </div>
+    </div>
+  </div>
+  <div class="delete-and-edit-buttons">
+    <button
+      *ngIf="user.userId === currentUserId"
+      mat-raised-button
+      color="primary"
+      (click)="toggleEditMode()"
+    >
+      Edit profile
+    </button>
+    <button
+      *ngIf="currentUserType === 'Player' && user.userId === currentUserId"
+      mat-raised-button
+      color="primary"
+      (click)="GoToPlayerLeaderboard()"
+    >
+      Check your statistics
+    </button>
+    <button
+      *ngIf="currentUserType === 'TeamManager' && user.userId === currentUserId"
+      mat-raised-button
+      color="primary"
+      (click)="GoToTeamLeaderboard()"
+    >
+      Check your team statistics
+    </button>
+    <button
+      *ngIf="
+        currentUserType === 'TournamentManager' && user.userId === currentUserId
+      "
+      mat-raised-button
+      color="primary"
+      (click)="GoToTournament()"
+    >
+      See the tournaments
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      *ngIf="user?.userType === 'RegisteredUser'"
+      (click)="confirmDeleteUser()"
+    >
+      Delete account
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      *ngIf="
+        user?.userType === 'Player' &&
+        currentUserType === 'RegisteredUser' &&
+        isPlayerFollowed === false
+      "
+      (click)="registeredUserAddFollowToPlayer()"
+    >
+      Follow this player
+    </button>
+    <button
+      mat-raised-button
+      color="primary"
+      *ngIf="
+        user?.userType === 'Player' &&
+        currentUserType === 'RegisteredUser' &&
+        isPlayerFollowed === true
+      "
+      (click)="registeredUserRemoveFollowFromPlayer()"
+    >
+      Unfollow this player
+    </button>
+  </div>
+  <div class="extra-infos">
+    <div
+      *ngIf="
+        user?.userType === 'Player' ||
+        user?.userType === 'TeamManager' ||
+        user?.userType === 'TournamentManager'
+      "
+      class="upcoming-tournaments-and-matches"
+    >
+      <h3>Upcoming Matches:</h3>
+      <div *ngIf="tournamentsMatches">
+        <div *ngFor="let tournamentMatch of tournamentsMatches">
+          <h4
+            *ngIf="tournamentMatch.tournament"
+            (click)="GoToTournamentId(tournamentMatch.tournament.tournamentId)"
+            class="tournament-container"
+          >
+            Tournament: {{ tournamentMatch.tournament.tournamentName }}
+          </h4>
+          <p *ngIf="tournamentMatch.match">
+            Match Date: {{ tournamentMatch.match.matchDate }}
+          </p>
+          <div
+            *ngIf="
+              tournamentMatch.match &&
+              tournamentMatch.match.participatingTeams &&
+              tournamentMatch.match.participatingTeams.length >= 2
+            "
+          >
+            <div class="team-container">
+              <div
+                (click)="
+                  GoToTeamId(tournamentMatch.match.participatingTeams[0].teamId)
+                "
+              >
+                <img
+                  [src]="tournamentMatch.match.participatingTeams[0].avatarURL"
+                  alt="{{
+                    tournamentMatch.match.participatingTeams[0].teamName
+                  }}"
+                />
+                <p>
+                  {{ tournamentMatch.match.participatingTeams[0].teamName }}
+                </p>
+              </div>
+              <p class="versus">versus</p>
+              <div
+                (click)="
+                  GoToTeamId(tournamentMatch.match.participatingTeams[1].teamId)
+                "
+              >
+                <img
+                  [src]="tournamentMatch.match.participatingTeams[1].avatarURL"
+                  alt="{{
+                    tournamentMatch.match.participatingTeams[1].teamName
+                  }}"
+                />
+                <p>
+                  {{ tournamentMatch.match.participatingTeams[1].teamName }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="user?.userType === 'RegisteredUser'">
+      <h3>Followed Players:</h3>
+      <div
+        *ngFor="let followedPlayer of followedPlayers"
+        class="followed-players-container"
+        (click)="GoToPlayerId(followedPlayer.userId)"
+      >
+        <div>
+          <h2 class="followed-player-pseudo">{{ followedPlayer?.nickname }}</h2>
+          <p>Player Name: {{ followedPlayer?.firstName }}</p>
+          <p>Player Surname: {{ followedPlayer?.lastName }}</p>
+          <p>Player Salary: {{ followedPlayer?.monthlySalary }}</p>
+          <p>Player Team: {{ followedPlayer?.teamName }}</p>
+        </div>
+        <div class="followed-player-img">
+          <img [src]="followedPlayer?.avatarUrl" alt="player profile picture" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

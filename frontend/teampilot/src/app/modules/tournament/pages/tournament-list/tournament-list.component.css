@@ -1,0 +1,14 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.title {
+  display: flex;
+  justify-content: center;
+}
+
+a:link, a:visited, a:active {
+  color: darkorange;
+}

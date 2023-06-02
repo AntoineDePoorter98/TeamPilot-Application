@@ -1,0 +1,13 @@
+<div class="maincontent">
+    <div class="inner">
+        <div class="toolbar" *ngIf="canTogglePF">
+            <div class="spacer"></div>
+            <mat-slide-toggle (change)="toggle($event)" [(ngModel)]="isChecked">Personalised Feed</mat-slide-toggle>
+        </div>
+        <mat-spinner class="spinner" *ngIf="isLoading"></mat-spinner>
+        <app-article class="art" *ngFor="let art of pageSlice" [article]="art"></app-article>
+        <mat-paginator [length]="this.articles.length" [pageSize]="5" [showFirstLastButtons]="true"
+            [pageSizeOptions]="[5, 10, 20]" (page)="OnPageChange($event)">
+        </mat-paginator>
+    </div>
+</div>

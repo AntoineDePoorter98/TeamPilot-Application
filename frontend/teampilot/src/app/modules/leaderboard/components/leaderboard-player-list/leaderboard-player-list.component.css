@@ -1,0 +1,45 @@
+.avatar {
+  max-width: 4rem;
+  max-height: 4rem;
+  width: auto;
+  height: auto;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.container
+{
+  width: 75%;
+  margin: 0 auto;
+}
+
+.mat-mdc-form-field {
+  margin-top: 2.5rem;
+  width: 100%;
+}
+
+td, th {
+  width: 20%;
+}
+
+.spinner {
+  margin: 10rem auto;
+}
+
+.mat-column-playerKills {
+  text-align: right;
+  justify-content: flex-end;
+}
+.mat-column-playerDeaths {
+  text-align: right;
+  justify-content: flex-end;
+}
+.mat-column-playerKDRatio {
+  text-align: right;
+  justify-content: flex-end;
+}

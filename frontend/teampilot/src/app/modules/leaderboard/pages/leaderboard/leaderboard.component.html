@@ -1,0 +1,43 @@
+<div class="center">
+  <mat-form-field appearance="outline" class="filter dense-2">
+    <mat-label>Tournament</mat-label>
+    <input
+      type="text"
+      matInput
+      [formControl]="selectedTournament"
+      [matAutocomplete]="auto"
+    />
+    <button
+      matSuffix
+      mat-icon-button
+      aria-label="Clear"
+      (click)="clear($event)"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+      <mat-option
+        *ngFor="let tournament of filteredTournaments$ | async"
+        [value]="tournament"
+      >
+        {{ tournament.tournamentName }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>
+
+<mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
+  <mat-tab label="TEAMS" *ngIf="showTeamList">
+    <app-leaderboard-team-list
+      [tournamentId]="getCurrentTournamentId()"
+      [teamOrPlayerName]="teamOrPlayerName"
+    >
+    </app-leaderboard-team-list>
+  </mat-tab>
+  <mat-tab label="PLAYERS" *ngIf="showPlayerList">
+    <app-leaderboard-player-list
+      [tournamentId]="getCurrentTournamentId()"
+      [teamOrPlayerName]="teamOrPlayerName"
+    ></app-leaderboard-player-list>
+  </mat-tab>
+</mat-tab-group>

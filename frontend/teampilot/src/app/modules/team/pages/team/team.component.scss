@@ -1,0 +1,550 @@
+@use "sass:math";
+
+@mixin rat($ratio:0) {
+  background-image: linear-gradient(45deg, $dark-blue 0% $ratio*100%, $dark-pink $ratio*100% 100%);
+  
+  @if $ratio == .5 {
+    background-image: linear-gradient(to right, $dark-blue 0% 50%, $dark-pink 50% 100%);
+  } @else if $ratio > .5 {
+    background-image: linear-gradient(135deg, $dark-blue 0% $ratio*100%, $dark-pink $ratio*100% 100%);
+  }
+  @else {
+    background-image: linear-gradient(45deg, $dark-blue 0% $ratio*100%, $dark-pink $ratio*100% 100%);
+  }
+}
+
+// global variables
+
+$dark-blue: #6462ce;
+$dark-pink: #ffd740;
+$light-blue: #b0acf0;
+$light-pink: #fde796;
+
+// layout 
+
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
+// main
+
+.team-public-view {
+  width: 100%;
+  padding-left: 20px;
+  align-self: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.players-view {
+  width:48%;
+}
+
+.players-head {
+  text-align: center;
+  margin: 20px;
+}
+
+.player-box {
+  padding:20px;
+  margin: 20px;
+  background-image: linear-gradient(to right ,white, #e3e2f8);
+  border: #b0acf0 solid 1px;
+  border-radius: 10px;
+  box-shadow: 1px 1px 2px $light-blue;
+  cursor: pointer;
+}
+
+.player-top {
+  color: #000;
+  text-decoration: none;
+  margin-left: 20px;
+}
+
+.player-top-m {
+  color: #000;
+  text-decoration: none;
+  text-align: center;
+  margin-left: 0px;
+}
+
+
+.player-cell {
+  display: flex;
+  flex-direction: row;
+}
+
+.player-icon {
+  margin-top: 10px;
+}
+
+.player-stats {
+  margin-left: 10%;
+  width: 60%;
+}
+
+.player-data-wrapper {
+  width: 68%;
+}
+
+.player-bar {
+  position:absolute;
+  padding-right: 10px;
+  transform: translateY(-128%);
+}
+
+.player-kill {
+  height: 30px;
+  margin-left: 60px;
+  &:after {
+   content: attr(id);
+    display: block;
+    background-color: $dark-blue;
+    width: 0px;
+    margin-bottom: 10px;
+    height: 80%;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all .6s ease;
+    padding-top: 4px;
+    text-align: center;
+    cursor: pointer;
+  }
+  &:hover,
+  &:focus {
+      &:after {
+          background-color: $light-blue; 
+          padding: 4px;
+      }
+  }
+}
+
+.player-death {
+  height: 30px;
+  margin-left: 60px;
+  &:after {
+   content: attr(id);
+    display: block;
+    background-color: $dark-pink;
+    width: 0px;
+    margin-bottom: 10px;
+    height: 80%;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all .6s ease;
+    padding-top: 4px;
+    text-align: center;
+    cursor: pointer;
+  }
+  &:hover,
+  &:focus {
+      &:after {
+          background-color: $light-pink; 
+          padding: 4px;
+      }
+  }
+}
+
+.player-ratio {
+  height: 30px;
+  margin-left: 60px;
+  $var:0;
+  &:after {
+   content: attr(id);
+    // @include rat($ratio: $var);
+    display: block;
+    margin-bottom: 10px;
+    height: 80%;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all .6s ease;
+    padding-top: 4px;
+    text-align: center;
+    cursor: pointer;
+    animation: wr-a 2s ease forwards;
+  }
+  &:hover,
+  &:focus {
+      &:after {
+        background-image: linear-gradient(to right, $light-blue, $light-pink);
+        padding: 4px;
+      }
+  }
+}
+
+@for $r from 1 through 1000 {    
+  .brick-#{$r} {
+      &:after {
+        $try:($r/100);
+          @include rat($ratio:$try);
+    }
+  }
+}
+
+@for $s from 1 through 1000 {    
+  .stick-#{$s} {
+      animation: w-a 2s ease forwards;
+      &:after {
+          $value: ($s * 2%);
+          width: $value;
+    }
+  }
+}
+
+// manager dash
+
+.team-manager-view {
+  width: 100%;
+  padding-left: 20px;
+  align-self: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.manager-dash {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-image: linear-gradient(to right ,white, #e3e2f8);
+  border: #b0acf0 solid 1px;
+  border-radius: 10px;
+  box-shadow: 1px 1px 2px $light-blue;
+}
+
+.dash-greet {
+  text-align: center;
+}
+
+.dash-edit {
+  display: flex;
+  flex-direction: column;
+}
+
+.edit-head {
+  text-align: center;
+  margin: 10px;
+}
+
+.submit-btn {
+  align-self: center;
+  width:60%;
+}
+
+.add-btn-d {
+  padding: 15px;
+  align-self: flex-start;
+  fill:#fff;
+}
+
+.add-btn {
+  padding: 15px;
+  align-self: flex-start;
+  background-color: rgb(96, 15, 172);
+  border-radius: 6px;
+  fill:#fff;
+}
+
+.add-player {
+  margin: 20px;
+}
+
+.player-selector {
+  margin: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+// manager player dash
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.remove-btn{
+  padding-top: 28px;
+  padding-bottom: 28px;
+  background-color: rgb(212, 54, 75);
+}
+
+.edit-btn {
+  margin-top: 60px;
+  width:66px;
+  height: 60px;
+  background-color: rgb(96, 15, 172);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.remove-svg {
+  fill: #fff;
+}
+
+.salary-head {
+  margin-top: -40px;
+   display: flex;
+   flex-direction: row;
+   justify-content:stretch;
+  align-items: center;
+}
+
+.current-salary-sum {
+margin-left: 28%;
+}
+
+.edit-btn:hover{
+  background-color: rgb(115, 52, 173);;
+}
+
+.edit-btn:active{
+  background-color: rgb(88, 1, 170);;
+}
+
+.edit-svg {
+  fill: white;
+}
+
+.salary-editor {
+  margin-top: 20px;
+  margin-left: 10%;
+  margin-right: 10%;
+  display: flex;
+  flex-direction: column;
+  justify-content:center;
+}
+
+// sidebar
+
+.team-side-bar{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding-right: 20px;
+  width: 26%;
+  background-image: linear-gradient(to right, white, rgb(229, 227, 255));
+  border-right: #c3c3c4 solid 1px;
+}
+
+.team-intro {
+  margin: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.team-icon {
+  align-self: center;
+}
+
+ .table-head {
+    margin-top: 40px;
+     font-weight: 400;
+     font-size: 20px;
+ }
+
+.table-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 60px;
+  padding-right: 60px;
+  border: #c3c3c4 solid 1px;
+  border-radius: 50%;
+  box-shadow: 1px 1px 2px grey;
+}
+
+.table {
+position: relative;
+right:42%;
+height: 160px;
+}
+
+.title{
+  margin-top: 28px;
+  text-align: center;
+}
+
+.table tr, .table th, .table td {
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    z-index: 2;
+    padding: 0;
+}
+
+.sub{
+  align-self: center;
+     margin: 12px;
+    width: 148px;
+    display: flex;
+    flex-direction: row;
+    justify-content:space-evenly;
+}
+
+  .table p {
+    margin: 5px 0 0; 
+    padding: 0;
+    opacity: .4;
+  }
+  
+  .a-left {
+    left: 14px; 
+    background-color: $dark-blue;
+    &:hover {
+      background-color: $light-blue;
+      opacity: .9;
+      color: rgb(27, 27, 27);
+    }
+  }
+
+  .right {
+    left: 80px; 
+    background-color: $dark-pink;    
+    &:hover {
+      background-color: $light-pink;
+      opacity: .9;
+      color: rgb(27, 27, 27);
+    }
+  }
+  
+  @for $x from 1 through 1000 {    
+    .bar-#{$x} {
+    border-color: transparent;
+    animation: h-a 4s ease forwards;
+    width: 60px; 
+    border: 1px solid; 
+    border-bottom: none; 
+    color: #000;
+    transition: all .6s ease;
+    $value: ($x * 1.6px);
+    height:$value;
+  }}
+   
+  @keyframes h-a {
+    from {
+      height: 0px;
+    }
+  }
+
+// graph
+
+.chart-title {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.data-wrapper {
+    width: 68%;
+}
+
+.sub-title{
+    text-align: center;
+}
+
+.bar {
+    position: absolute;
+    left: 20px;
+    margin-top: 8px;
+}
+
+@keyframes wr-a {
+    from { width: 0%; }
+    to { width: 100%; }
+}
+
+// tournaments section
+
+.team-tournaments {
+  width: 34%;
+}
+
+.tournament-head {
+  text-align: center;
+  margin: 20px;
+}
+
+.tournament-box {
+  display: flex;
+  flex-direction: column;
+
+  padding:40px;
+  background-image: linear-gradient(to right ,white, #e3e2f8);
+  border: #b0acf0 solid 1px;
+  border-radius: 10px;
+  box-shadow: 1px 1px 2px $light-blue;
+  cursor: pointer;
+}
+
+.tournament-sub {
+  margin: 10px;
+  text-align: center;
+}
+
+.tournament-title {
+  text-align: center;
+  text-decoration: none;
+  color:$dark-blue;
+}
+
+.turn-head:hover {
+color: $light-blue;
+}
+
+.tournament-date {
+  color: $dark-pink;
+  text-align: center;
+}
+
+.show-match-button {
+  margin-bottom: 20px;
+}
+
+.matches-block {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.match-view {
+  width:40%;
+}
+
+.rival-team {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.tournament-lost {
+  color: rgb(202, 35, 57);
+  text-align: center;
+}
+
+.tournament-won {
+  color: rgb(15, 110, 58);
+  text-align: center;
+}
+
+.match-pic {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.tournament-load {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}

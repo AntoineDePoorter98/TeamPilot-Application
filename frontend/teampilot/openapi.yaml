@@ -1,0 +1,1242 @@
+openapi: 3.0.1
+info:
+  title: TeamPilot.Api
+  version: '1.0'
+paths:
+  /articles:
+    get:
+      tags:
+        - Article
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleDTO'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleDTO'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleDTO'
+    post:
+      tags:
+        - Article
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArticleDTO'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ArticleDTO'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ArticleDTO'
+      responses:
+        '200':
+          description: Success
+  /articles/following:
+    get:
+      tags:
+        - Article
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleDTO'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleDTO'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ArticleDTO'
+  /articles/{id}:
+    get:
+      tags:
+        - Article
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ArticleDTO'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArticleDTO'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ArticleDTO'
+    put:
+      tags:
+        - Article
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArticleDTO'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ArticleDTO'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ArticleDTO'
+      responses:
+        '200':
+          description: Success
+    delete:
+      tags:
+        - Article
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegisterDTO'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UserRegisterDTO'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UserRegisterDTO'
+      responses:
+        '200':
+          description: Success
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserLoginDTO'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UserLoginDTO'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UserLoginDTO'
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/UserLoginResponseDTO'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserLoginResponseDTO'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/UserLoginResponseDTO'
+  /leaderboards/players:
+    get:
+      tags:
+        - Leaderboard
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LeaderBoardPlayerDTO'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LeaderBoardPlayerDTO'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LeaderBoardPlayerDTO'
+  /leaderboards/teams:
+    get:
+      tags:
+        - Leaderboard
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LeaderBoardTeamDTO'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LeaderBoardTeamDTO'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LeaderBoardTeamDTO'
+  /leaderboards/tournament/{tournamentId}/players:
+    get:
+      tags:
+        - Leaderboard
+      parameters:
+        - name: tournamentId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LeaderBoardPlayerDTO'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LeaderBoardPlayerDTO'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LeaderBoardPlayerDTO'
+  /leaderboards/tournament/{tournamentId}/teams:
+    get:
+      tags:
+        - Leaderboard
+      parameters:
+        - name: tournamentId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LeaderBoardTeamDTO'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LeaderBoardTeamDTO'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LeaderBoardTeamDTO'
+  /tests:
+    get:
+      tags:
+        - Ping
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/PingDTO'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PingDTO'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/PingDTO'
+  /teams:
+    get:
+      tags:
+        - Team
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamDTO'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamDTO'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamDTO'
+    post:
+      tags:
+        - Team
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamDTO'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/TeamDTO'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/TeamDTO'
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/TeamDTO'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamDTO'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/TeamDTO'
+  /teams/{id}:
+    get:
+      tags:
+        - Team
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/TeamDTO'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamDTO'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/TeamDTO'
+    put:
+      tags:
+        - Team
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamDTO'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/TeamDTO'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/TeamDTO'
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/TeamDTO'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamDTO'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/TeamDTO'
+    delete:
+      tags:
+        - Team
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+  /teams/players:
+    get:
+      tags:
+        - Team
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlayerDTO'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlayerDTO'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PlayerDTO'
+    put:
+      tags:
+        - Team
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TeamDTO'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/TeamDTO'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/TeamDTO'
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/TeamDTO'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamDTO'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/TeamDTO'
+  /teams/players/{id}:
+    get:
+      tags:
+        - Team
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/PlayerDTO'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayerDTO'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/PlayerDTO'
+  /tournaments:
+    post:
+      tags:
+        - Tournament
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewTournamentDTO'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/NewTournamentDTO'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/NewTournamentDTO'
+      responses:
+        '200':
+          description: Success
+    get:
+      tags:
+        - Tournament
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TournamentDTO'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TournamentDTO'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TournamentDTO'
+  /tournaments/teams:
+    get:
+      tags:
+        - Tournament
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamForTournamentDTO'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamForTournamentDTO'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamForTournamentDTO'
+  /tournaments/{id}:
+    get:
+      tags:
+        - Tournament
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/TournamentDTO'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TournamentDTO'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/TournamentDTO'
+    delete:
+      tags:
+        - Tournament
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+    put:
+      tags:
+        - Tournament
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewTournamentDTO'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/NewTournamentDTO'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/NewTournamentDTO'
+      responses:
+        '200':
+          description: Success
+  /tournaments/tournamentmanager/{id}:
+    get:
+      tags:
+        - Tournament
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TournamentForManagerDTO'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TournamentForManagerDTO'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TournamentForManagerDTO'
+  /users:
+    get:
+      tags:
+        - User
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserWithNullablePlayerPropsDTO'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserWithNullablePlayerPropsDTO'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserWithNullablePlayerPropsDTO'
+  /users/{id}:
+    get:
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/UserWithNullablePlayerPropsDTO'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserWithNullablePlayerPropsDTO'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/UserWithNullablePlayerPropsDTO'
+    put:
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserWithNullablePlayerPropsDTO'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UserWithNullablePlayerPropsDTO'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UserWithNullablePlayerPropsDTO'
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/UserWithNullablePlayerPropsDTO'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserWithNullablePlayerPropsDTO'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/UserWithNullablePlayerPropsDTO'
+    delete:
+      tags:
+        - User
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+  /users/player/tournaments-and-matches/{playerId}:
+    get:
+      tags:
+        - User
+      parameters:
+        - name: playerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TournamentMatchDTO'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TournamentMatchDTO'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TournamentMatchDTO'
+  /users/tournament-manager/tournaments-and-matches/{tournamentManagerId}:
+    get:
+      tags:
+        - User
+      parameters:
+        - name: tournamentManagerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TournamentMatchDTO'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TournamentMatchDTO'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TournamentMatchDTO'
+  /users/team-manager/tournaments-and-matches/{teamManagerId}:
+    get:
+      tags:
+        - User
+      parameters:
+        - name: teamManagerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TournamentMatchDTO'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TournamentMatchDTO'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TournamentMatchDTO'
+  /users/{userId}/follow/{itemType}/{itemId}:
+    post:
+      tags:
+        - User
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: itemType
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+  /users/{userId}/unfollow/{itemType}/{itemId}:
+    delete:
+      tags:
+        - User
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: itemId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: itemType
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+  /users/{userId}/unfollowAll:
+    delete:
+      tags:
+        - User
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+components:
+  schemas:
+    ArticleDTO:
+      type: object
+      properties:
+        articleId:
+          type: string
+          nullable: true
+        authorName:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        body:
+          type: string
+          nullable: true
+        picUrl:
+          type: string
+          nullable: true
+        vidUrl:
+          type: string
+          nullable: true
+        creationDate:
+          type: string
+          format: date-time
+        teamId:
+          type: string
+          nullable: true
+        playerId:
+          type: string
+          nullable: true
+        tournamentId:
+          type: string
+          nullable: true
+      additionalProperties: false
+    LeaderBoardPlayerDTO:
+      type: object
+      properties:
+        playerId:
+          type: string
+          nullable: true
+        playerName:
+          type: string
+          nullable: true
+        playerKills:
+          type: integer
+          format: int32
+        playerDeaths:
+          type: integer
+          format: int32
+        playerKDRatio:
+          type: number
+          format: double
+          readOnly: true
+      additionalProperties: false
+    LeaderBoardTeamDTO:
+      type: object
+      properties:
+        teamId:
+          type: string
+          nullable: true
+        teamName:
+          type: string
+          nullable: true
+        teamWonMatches:
+          type: integer
+          format: int32
+        teamLostMatches:
+          type: integer
+          format: int32
+        teamWonRounds:
+          type: integer
+          format: int32
+        teamLostRounds:
+          type: integer
+          format: int32
+      additionalProperties: false
+    MatchDTO:
+      type: object
+      properties:
+        matchId:
+          type: string
+          nullable: true
+        matchLengthInMinutes:
+          type: string
+          nullable: true
+        matchDate:
+          type: string
+          nullable: true
+        participatingTeams:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamForTournamentDTO'
+          nullable: true
+      additionalProperties: false
+    NewTournamentDTO:
+      type: object
+      properties:
+        tournamentId:
+          type: string
+          nullable: true
+        tournamentName:
+          type: string
+          nullable: true
+        tournamentFormat:
+          type: string
+          nullable: true
+        tournamentPrizePool:
+          type: number
+          format: double
+        tournamentLocation:
+          type: string
+          nullable: true
+        tournamentSponsor:
+          type: string
+          nullable: true
+        tournamentStartDate:
+          type: string
+          nullable: true
+        tournamentEndDate:
+          type: string
+          nullable: true
+        tournamentParticipatingTeams:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamForTournamentDTO'
+          nullable: true
+      additionalProperties: false
+    PastMatchDTO:
+      type: object
+      properties:
+        matchId:
+          type: string
+          nullable: true
+        matchLengthInMinutes:
+          type: string
+          nullable: true
+        matchDate:
+          type: string
+          nullable: true
+        participatingTeams:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamForTournamentDTO'
+          nullable: true
+        winningTeam:
+          $ref: '#/components/schemas/TeamForTournamentDTO'
+      additionalProperties: false
+    PingDTO:
+      type: object
+      properties:
+        pingResponse:
+          type: string
+          nullable: true
+      additionalProperties: false
+    PlayerDTO:
+      type: object
+      properties:
+        userId:
+          type: string
+          nullable: true
+        userType:
+          type: string
+          nullable: true
+        nickname:
+          type: string
+          nullable: true
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+        avatarUrl:
+          type: string
+          nullable: true
+        bio:
+          type: string
+          nullable: true
+        teamId:
+          type: string
+          nullable: true
+        monthlySalary:
+          type: string
+          nullable: true
+      additionalProperties: false
+    TeamDTO:
+      type: object
+      properties:
+        teamId:
+          type: string
+          nullable: true
+        teamName:
+          type: string
+          nullable: true
+        avatarUrl:
+          type: string
+          nullable: true
+        teamManagerId:
+          type: string
+          nullable: true
+        players:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlayerDTO'
+          nullable: true
+      additionalProperties: false
+    TeamForTournamentDTO:
+      type: object
+      properties:
+        teamId:
+          type: string
+          nullable: true
+        teamName:
+          type: string
+          nullable: true
+        avatarURL:
+          type: string
+          nullable: true
+      additionalProperties: false
+    TournamentDTO:
+      type: object
+      properties:
+        tournamentId:
+          type: string
+          nullable: true
+        tournamentName:
+          type: string
+          nullable: true
+        tournamentFormat:
+          type: string
+          nullable: true
+        tournamentPrizePool:
+          type: number
+          format: double
+        tournamentLocation:
+          type: string
+          nullable: true
+        tournamentSponsor:
+          type: string
+          nullable: true
+        tournamentStartDate:
+          type: string
+          nullable: true
+        tournamentEndDate:
+          type: string
+          nullable: true
+        tournamentMatches:
+          type: array
+          items:
+            $ref: '#/components/schemas/MatchDTO'
+          nullable: true
+        futureTournamentMatches:
+          type: array
+          items:
+            $ref: '#/components/schemas/MatchDTO'
+          nullable: true
+        pastTournamentMatches:
+          type: array
+          items:
+            $ref: '#/components/schemas/PastMatchDTO'
+          nullable: true
+        tournamentParticipatingTeams:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamForTournamentDTO'
+          nullable: true
+        winningTeam:
+          $ref: '#/components/schemas/TeamForTournamentDTO'
+        upcomingMatch:
+          $ref: '#/components/schemas/MatchDTO'
+      additionalProperties: false
+    TournamentForManagerDTO:
+      type: object
+      properties:
+        tournamentId:
+          type: string
+          nullable: true
+        tournamentName:
+          type: string
+          nullable: true
+      additionalProperties: false
+    TournamentMatchDTO:
+      type: object
+      properties:
+        tournament:
+          $ref: '#/components/schemas/TournamentDTO'
+        match:
+          $ref: '#/components/schemas/MatchDTO'
+      additionalProperties: false
+    UserLoginDTO:
+      type: object
+      properties:
+        email:
+          type: string
+          nullable: true
+        password:
+          type: string
+          nullable: true
+      additionalProperties: false
+    UserLoginResponseDTO:
+      type: object
+      properties:
+        token:
+          type: string
+          nullable: true
+      additionalProperties: false
+    UserRegisterDTO:
+      type: object
+      properties:
+        email:
+          type: string
+          nullable: true
+        password:
+          type: string
+          nullable: true
+        nickname:
+          type: string
+          nullable: true
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        avatarUrl:
+          type: string
+          nullable: true
+        bio:
+          type: string
+          nullable: true
+      additionalProperties: false
+    UserWithNullablePlayerPropsDTO:
+      type: object
+      properties:
+        userId:
+          type: string
+          nullable: true
+        userType:
+          type: string
+          nullable: true
+        nickname:
+          type: string
+          nullable: true
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+        avatarUrl:
+          type: string
+          nullable: true
+        bio:
+          type: string
+          nullable: true
+        monthlySalary:
+          type: number
+          format: double
+          nullable: true
+        teamId:
+          type: string
+          nullable: true
+      additionalProperties: false

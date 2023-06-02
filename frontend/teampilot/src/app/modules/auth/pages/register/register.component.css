@@ -1,0 +1,17 @@
+.container {
+  max-width: 30rem;
+  margin: 10rem auto 0 auto;
+  text-align: center;
+}
+
+mat-form-field {
+  display: block;
+}
+
+.navigate-block {
+  margin-top: 1rem;
+}
+
+.button-container {
+  width: 100%;
+}

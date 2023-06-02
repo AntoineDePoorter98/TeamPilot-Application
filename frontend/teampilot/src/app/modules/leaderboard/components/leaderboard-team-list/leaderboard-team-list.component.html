@@ -1,0 +1,62 @@
+<div class="container">
+  <mat-form-field appearance="outline" class="dense-2">
+    <mat-label>Filter</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      #input
+      [value]="teamOrPlayerName ? teamOrPlayerName : ''"
+    />
+  </mat-form-field>
+
+  <table mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="teamName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Team</th>
+      <td mat-cell *matCellDef="let row">
+        <div class="flex">
+          <img class="avatar" [src]="row.teamAvatarUrl" alt="" />
+          <span>{{ row.teamName }} </span>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="teamWonMatches">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Won Matches</th>
+      <td mat-cell *matCellDef="let row">{{ row.teamWonMatches }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="teamLostMatches">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Lost Matches</th>
+      <td mat-cell *matCellDef="let row">{{ row.teamLostMatches }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="teamWonRounds">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Won Rounds</th>
+      <td mat-cell *matCellDef="let row">{{ row.teamWonRounds }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="teamLostRounds">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Lost Rounds</th>
+      <td mat-cell *matCellDef="let row">{{ row.teamLostRounds }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr
+      (click)="NavigateToTeam(row.teamId)"
+      mat-row
+      *matRowDef="let row; columns: displayedColumns"
+    ></tr>
+  </table>
+
+  <mat-spinner
+    class="spinner"
+    color="accent"
+    diameter="60"
+    *ngIf="isLoading"
+  ></mat-spinner>
+
+  <mat-paginator
+    [pageSizeOptions]="[25, 50, 100]"
+    aria-label="Select page of teams"
+  />
+</div>

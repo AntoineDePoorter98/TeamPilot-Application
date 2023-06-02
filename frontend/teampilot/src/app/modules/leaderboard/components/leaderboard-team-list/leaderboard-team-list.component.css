@@ -1,0 +1,52 @@
+.avatar {
+  max-width: 2rem;
+  max-height: 2rem;
+  width: auto;
+  height: auto;
+  padding-right: 1rem;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.container
+{
+  width: 75%;
+  margin: 0 auto;
+}
+
+.mat-mdc-form-field {
+  margin-top: 2.5rem;
+  width: 100%;
+}
+
+.spinner {
+  margin: 10rem auto;
+}
+
+td, th {
+  width: 20%;
+}
+.mat-column-teamWonMatches {
+  text-align: right;
+  justify-content: flex-end;
+}
+.mat-column-teamLostMatches {
+  text-align: right;
+  justify-content: flex-end;
+}
+.mat-column-teamWonRounds {
+  text-align: right;
+  justify-content: flex-end;
+}
+.mat-column-teamLostRounds {
+  text-align: right;
+  justify-content: flex-end;
+}
+
+/* .team-name {
+  height: 100%;
+  margin: 0 auto;
+} */
